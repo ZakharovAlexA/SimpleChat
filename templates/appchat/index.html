@@ -1,0 +1,68 @@
+{% extends 'default.html' %}
+
+{% block title %}
+Simple Chat
+{% endblock title %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <br>
+        {% if user.profile.avatar %}
+            <img src="{{ user.profile.avatar.url }}" alt="Avatar" class="logo-image"
+                style="float: left; width: 50px; height: 50px; border-radius: 15px;">
+        {% endif %}
+        <p>Придумайте имя новой комнаты Чата.</p>
+        <p><em>(Используйте только латинские буквы, цифры и пробел)</em></p>
+        <input class="form-control" id="room-name-input" type="text" size="100"><br>
+        <input class="btn btn-primary btn-lg btn-block" id="room-name-submit" type="button" value="Создать Комнату"><br>
+        <p>***</p>
+        <p>Или введите имя существующей комнаты:</p>
+        <div id="rooms-list">нет комнат</div>
+
+        {{ rooms|json_script:"rooms" }}
+        <script>
+            document.querySelector('#room-name-input').focus();
+            document.querySelector('#room-name-input').onkeyup = function(e) {
+                if (e.keyCode === 13) {
+                    document.querySelector('#room-name-submit').click();
+                }
+            };
+
+            document.querySelector('#room-name-submit').onclick = function(e) {
+                var roomName = document.querySelector('#room-name-input').value;
+                if (/^[a-z0-9\s]+$/i.test(roomName)) {
+                    window.location.pathname = '/appchat/' + roomName + '/';
+                } else { alert('Не верное имя Комнаты! Используйте только латинские буквы, цифры и пробел.'); }
+            };
+
+            function roomsList(rooms) {
+                if (rooms.length != 0) {
+                    roomsOpened = '';
+                    for (let r of rooms) {
+                        roomsOpened += `<p><a href="/appchat/` + r + `/">` + r + `</a></p>`;
+                    }
+                } else {
+                    roomsOpened = `Ни одна комната пока не открыта.`
+                };
+                document.getElementById("rooms-list").innerHTML = roomsOpened;
+            }
+
+            async function roomsLoader(callback) {
+                const roomsUpload = await fetch('./appchat/roomsupdate/')
+                        .then(response => response.json());
+                callback(roomsUpload);
+            };
+
+            rooms = JSON.parse(document.getElementById('rooms').textContent);
+            roomsList(rooms);
+            setTimeout(roomsLoader, 1000, roomsList);
+            setInterval(roomsLoader, 30000, roomsList);
+        </script>
+    {% else %}
+        <h2>Войти или Зарегистрироваться</h2>
+        <hr>
+        <a class="nav-link" href="/accounts/login/">Войти</a>
+        <br>
+        <a class="nav-link" href="/accounts/signup/">Зарегистрироваться</a>
+    {% endif %}
+{% endblock content %}
