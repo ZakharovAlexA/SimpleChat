@@ -18,7 +18,7 @@
 git clone https://github.com/ZakharovAlexA/SimpleChat.git
 ```
 
-Из директории SimoleChat_proj запускаем и настраиваем виртуальное окружение проекта
+Из директории SimpleChat_proj запускаем и настраиваем виртуальное окружение проекта
 ```bash
 python -m venv venv
 venv\scripts\activate
