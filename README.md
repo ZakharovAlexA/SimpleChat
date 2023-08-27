@@ -18,15 +18,6 @@
 git clone https://github.com/ZakharovAlexA/SimpleChat.git
 ```
 
-Генерируем Django secret-key
-```bash
-python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
-```
-И вставляем его в .\SimpleChat\settings.py
-```python
-SECRET_KEY = ''
-```
-
 Из директории SimoleChat_proj запускаем и настраиваем виртуальное окружение проекта
 ```bash
 python -m venv venv
@@ -35,6 +26,14 @@ cd .\SimpleChat\
 pip install -r requirements.txt
 ```
 
+Генерируем Django secret-key
+```bash
+python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
+```
+И вставляем его в .\SimpleChat\settings.py
+```python
+SECRET_KEY = ''
+```
 Запускаем сервер
 ```bash
 python manage.py runserver
