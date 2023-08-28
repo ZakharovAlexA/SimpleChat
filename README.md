@@ -13,7 +13,7 @@
 
 Инструция составлена для операционной системы Windows.<br>
 
-Клонируем проект в заранее созданную директорию SimoleChat_proj
+Клонируем проект в заранее созданную директорию SimpleChat_proj
 ```bash
 git clone https://github.com/ZakharovAlexA/SimpleChat.git
 ```
